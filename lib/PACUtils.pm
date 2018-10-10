@@ -105,7 +105,7 @@ require Exporter;
 # Define GLOBAL CLASS variables
 
 our $APPNAME		= 'PAC';
-our $APPVERSION		= '4.5.5.7';
+our $APPVERSION		= '4.5.5.9';
 our $DEBUG_LEVEL	= 1;
 our $ARCH			= '';
 my $ARCH_TMP		= `/bin/uname -m 2>&1`;

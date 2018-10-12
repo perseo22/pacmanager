@@ -3,7 +3,7 @@ package PACUtils;
 ##################################################################
 # This file is part of PAC( Perl Auto Connector)
 #
-# Copyright (C) 2010-2016  David Torrejon Vaquerizas
+# Copyright (C) 2010-2015  David Torrejon Vaquerizas
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@ require Exporter;
 # Define GLOBAL CLASS variables
 
 our $APPNAME		= 'PAC';
-our $APPVERSION		= '4.5.5.8';
+our $APPVERSION		= '4.5.5.9';
 our $DEBUG_LEVEL	= 1;
 our $ARCH			= '';
 my $ARCH_TMP		= `/bin/uname -m 2>&1`;
@@ -114,7 +114,7 @@ elsif	( $ARCH_TMP =~ /ppc64/gio )		{ $ARCH = 'PPC64'; }
 elsif	( $ARCH_TMP =~ /armv7l/gio )	{ $ARCH = 'ARMV7L'; }
 elsif	( $ARCH_TMP =~ /arm/gio )		{ $ARCH = 'ARM'; }
 else									{ $ARCH = 32; }
-my $RES_DIR			= $RealBin . '/res';
+my $RES_DIR			= '/usr/share/pacmanager/res';
 my $SPLASH_IMG		= $RES_DIR . '/pac256x256.jpg';
 my $CFG_DIR			= $ENV{'HOME'} . '/.config/pac';
 my $CFG_FILE		= $CFG_DIR . '/pac.yml';
@@ -126,28 +126,6 @@ my %WINDOWPROGRESS;
 my $WIDGET_POPUP;
 
 our @DONATORS_LIST	= (
-	'Angelo Maria Lambiasi',
-	'TWEB Inc',
-	'Jeff Bakst',
-	'Sebastian Treu',
-	"Brian's Consultant Services",
-	'Cheah CH',
-	'Joseph Whipple',
-	'Felix Brack',
-	'Kalmykov Alexander',
-	'Paul Verreth',
-	'Iftimie Catalin Panaite',
-	'Andre Geißler',
-	'Arend de Boer',
-	'Taylor Finklea',
-	'Egbert Gerber',
-	'Гусаров Андрей',
-	'Carlos Bragatto',
-	'Nicklas Börjesson',
-	'Peter Taylor',
-	'Javier Martin Garcia-Asenjo',
-	'Helmut Kleinhans',
-	'Richard Kozel',
 	'Timo Büttner',
 	'Max Maskevich',
 	'1one - 18mind',
@@ -207,7 +185,7 @@ our @PACDESKTOP		= (
 
 # Gnome2 - VTE (here be dragons...)
 eval q {
-	unshift( @INC, $RealBin . '/lib/ex/vte' . $PACUtils::ARCH );
+	unshift( @INC, '/usr/share/pacmanager/lib/ex/vte' . $PACUtils::ARCH );
 	
 	package Gnome2::Vte;
 	
@@ -799,7 +777,7 @@ sub _getMethods {
 			_( $self, 'entryUser' )				-> set_sensitive( 1 );
 			_( $self, 'alignUserPass' )			-> set_sensitive( 1 );
 			_( $self, 'rbCfgAuthUserPass' )		-> set_active( $$cfg{'auth type'} eq 'userpass' );
-			_( $self, 'framePublicKey' )		-> set_sensitive( 0 );
+			_( $self, 'framePublicKey' )		-> set_sensitive( 1 );
 			_( $self, 'entryPassphrase' )		-> set_text( $$cfg{passphrase} // '' );
 			_( $self, 'fileCfgPublicKey' )		-> set_filename( $$cfg{'public key'} // '' );
 			_( $self, 'rbCfgAuthPublicKey' )	-> set_active( $$cfg{'auth type'} eq 'publickey' );
@@ -1854,7 +1832,7 @@ sub _cfgSanityCheck {
 	$$cfg{'defaults'}{'screenshots external viewer'}	//= '/usr/bin/xdg-open';
 	$$cfg{'defaults'}{'screenshots use external viewer'}//= 0;
 	$$cfg{'defaults'}{'sort groups first'}				//= 1;
-	$$cfg{'defaults'}{'word characters'}				//= '\.:_\/a-zA-Z0-9-';
+	$$cfg{'defaults'}{'word characters'}				//= '\.:_\/-A-Za-z0-9';
 	$$cfg{'defaults'}{'terminal emulation'}				//= 'xterm';
 	$$cfg{'defaults'}{'show tray icon'}					//= 1;
 	$$cfg{'defaults'}{'unsplit disconnected terminals'}	//= 0;
@@ -3045,7 +3023,7 @@ sub _getXWindowsList {
 			$list{'by_pid'}{$data_pid}{'xid'}		= $xid;
 			$list{'by_pid'}{$data_pid}{'command'}	= $data_command;
 		}
-	}
+	}   
 	
 	#my $tw = Gtk2::Window -> new;
 	#my $vb = Gtk2::VBox -> new( 0, 0 );
@@ -3059,7 +3037,7 @@ sub _getXWindowsList {
 	#my $sock = Gtk2::Socket -> new;
 	#$vb -> add( $sock );
 	#$tw -> show_all;
-	#$sock -> add_id( $list{'by_name'}{'Calculator'}{'xid'} );
+	#$sock -> add_id( $$list{'by_name'}{'Calculator'}{'xid'} );
 
 	return \%list;
 }

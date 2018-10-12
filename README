@@ -54,6 +54,14 @@
 
 * VERSIONS:
 
+	- 4.5.5.9 ( by bitchecker ):
+
+		. Fixed a bug for using RSA keys authentication with MOSH protocol
+
+	- 4.5.5.8:
+
+		. Fixed a bug that prevented PAC from starting with "clusters" view selected
+
 	- 4.5.5.8:
 
 		. Fixed a bug that prevented PAC from starting with "clusters" view selected

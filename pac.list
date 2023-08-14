@@ -52,7 +52,7 @@ $icondir=/usr/share/pixmaps
 %requires libgtk2-gladexml-perl
 %requires libgtk2-ex-simple-list-perl
 %requires libnet-arp-perl
-%requires libossp-uuid-perl
+%requires lib-uuid-perl
 %requires openssh-client
 %requires telnet
 %requires ftp

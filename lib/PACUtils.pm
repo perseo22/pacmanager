@@ -38,7 +38,7 @@ use Sys::Hostname;
 use Net::ARP;
 use Net::Ping;
 use YAML;
-use OSSP::uuid;
+use UUID;
 use Encode;
 use KeePass;
 use DynaLoader; # Required for PACTerminal and PACShell PAC modules
@@ -107,19 +107,19 @@ require Exporter;
 our $APPNAME		= 'PAC';
 our $APPVERSION		= '4.5.5.8';
 our $DEBUG_LEVEL	= 1;
-our $ARCH			= '';
+our $ARCH		= '';
 my $ARCH_TMP		= `/bin/uname -m 2>&1`;
-if		( $ARCH_TMP =~ /x86_64/gio )	{ $ARCH = 64; }
-elsif	( $ARCH_TMP =~ /ppc64/gio )		{ $ARCH = 'PPC64'; }
+if	( $ARCH_TMP =~ /x86_64/gio )	{ $ARCH = 64; }
+elsif	( $ARCH_TMP =~ /ppc64/gio )	{ $ARCH = 'PPC64'; }
 elsif	( $ARCH_TMP =~ /armv7l/gio )	{ $ARCH = 'ARMV7L'; }
-elsif	( $ARCH_TMP =~ /arm/gio )		{ $ARCH = 'ARM'; }
-else									{ $ARCH = 32; }
-my $RES_DIR			= $RealBin . '/res';
+elsif	( $ARCH_TMP =~ /arm/gio )	{ $ARCH = 'ARM'; }
+else					{ $ARCH = 32; }
+my $RES_DIR		= $RealBin . '/res';
 my $SPLASH_IMG		= $RES_DIR . '/pac256x256.jpg';
-my $CFG_DIR			= $ENV{'HOME'} . '/.config/pac';
+my $CFG_DIR		= $ENV{'HOME'} . '/.config/pac';
 my $CFG_FILE		= $CFG_DIR . '/pac.yml';
 my $R_CFG_FILE		= $PACMain::R_CFG_FILE;
-my $CIPHER			= Crypt::CBC -> new( -key => 'PAC Manager (David Torrejon Vaquerizas, david.tv@gmail.com)', -cipher => 'Blowfish', -salt => '12345678' ) or die "ERROR: $!";
+my $CIPHER		= Crypt::CBC -> new( -nodeprecate=>1, -key => 'PAC Manager (David Torrejon Vaquerizas, david.tv@gmail.com)', -cipher => 'Blowfish', -salt => '12345678' ) or die "ERROR: $!";
 
 my %WINDOWSPLASH;
 my %WINDOWPROGRESS;
@@ -2388,8 +2388,8 @@ sub _cipherCFG {
 		( $$cfg{'defaults'}{'global variables'}{$var}{'hidden'} eq '1' ) and $$cfg{'defaults'}{'global variables'}{$var}{'value'} = $CIPHER -> encrypt_hex( encode( 'utf8', $$cfg{'defaults'}{'global variables'}{$var}{'value'} ) );
 	}
 	
-	defined $$cfg{'defaults'}{'keepass'} and $$cfg{'defaults'}{'keepass'}{'password'} = $CIPHER -> encrypt_hex( encode( 'utf8', $$cfg{'defaults'}{'keepass'}{'password'} ) );
-	$$cfg{'defaults'}{'sudo password'} = $CIPHER -> encrypt_hex( encode( 'utf8', $$cfg{'defaults'}{'sudo password'} ) );
+	#defined $$cfg{'defaults'}{'keepass'} and $$cfg{'defaults'}{'keepass'}{'password'} = $CIPHER -> encrypt_hex( encode( 'utf8', $$cfg{'defaults'}{'keepass'}{'password'} ) );
+	#$$cfg{'defaults'}{'sudo password'} = $CIPHER -> encrypt_hex( encode( 'utf8', $$cfg{'defaults'}{'sudo password'} ) );
 	
 	foreach my $uuid ( keys %{ $$cfg{'environments'} } ) {
 		if ( $uuid =~ /^HASH/go ) {
@@ -2400,8 +2400,8 @@ sub _cipherCFG {
 			delete $$cfg{'environments'}{$uuid}{'pass'};
 			next;
 		}
-		$$cfg{'environments'}{$uuid}{'pass'}		= $CIPHER -> encrypt_hex( encode( 'utf8', $$cfg{'environments'}{$uuid}{'pass'} ) );
-		$$cfg{'environments'}{$uuid}{'passphrase'}	= $CIPHER -> encrypt_hex( encode( 'utf8', $$cfg{'environments'}{$uuid}{'passphrase'} ) );
+		#$$cfg{'environments'}{$uuid}{'pass'}		= $CIPHER -> encrypt_hex( encode( 'utf8', $$cfg{'environments'}{$uuid}{'pass'} ) );
+		#$$cfg{'environments'}{$uuid}{'passphrase'}	= $CIPHER -> encrypt_hex( encode( 'utf8', $$cfg{'environments'}{$uuid}{'passphrase'} ) );
 		
 		foreach my $hash ( @{ $$cfg{'environments'}{$uuid}{'expect'} } ) {
 			( $$hash{'hidden'} eq '1' ) and $$hash{'send'} = $CIPHER -> encrypt_hex( encode( 'utf8', $$hash{'send'} ) );
